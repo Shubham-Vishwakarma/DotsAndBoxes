@@ -1,13 +1,52 @@
-body {
+* {
+  padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  text-decoration: none;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.gameSection {
+  background-color: blue;
+  height: 100vh;
+  position: relative;
+  margin: auto;
+  width: 100vw;
+}
+
+.gameBoard {
+  background-color: yellow;
+  height: 80vmin;
+  width: 80vmin;
+  position: relative;
+  top: calc((100vh - 80vmin)/2);
+  left: calc((100% - 80vmin)/2);
+}
+
+@media screen and (min-width: 1024px){
+
+  .gameSection {
+    width: 80vw;
+  }
+
+  .gameBoard {
+    height: 50vmin;
+    width: 50vmin;
+    top: calc((100vh - 50vmin)/2);
+    left: calc((100% - 50vmin)/2);
+  }
+
+}
+
+@media screen and (min-width: 1800px){
+
+  .gameSection {
+    width: 60vw;
+  }
+
+  .gameBoard {
+    height: 80vmin;
+    width: 80vmin;
+    top: calc((100vh - 80vmin)/2);
+    left: calc((100% - 80vmin)/2);
+  }
+
 }
