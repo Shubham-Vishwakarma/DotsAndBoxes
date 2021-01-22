@@ -17,8 +17,6 @@ const cssStyle: CSS.Properties = {
     margin: 'auto'
 }
 
-console.log(cssStyle);
-
 const Game = () => {
     return (
         <div className='gameSection' style={cssStyle}>
