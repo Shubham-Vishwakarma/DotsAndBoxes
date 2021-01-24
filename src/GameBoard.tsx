@@ -2,16 +2,15 @@ import './index.css'
 
 import React from 'react';
 import CSS from 'csstype';
-import Square from './Square';
+import DotsAndBoxes from './DotsAndBoxes';
+import Utility from './Utility';
 
-
-type Props = {
+interface Props{
     parentWidth: number,
     parentHeight: number
 }
 
 type State = {
-    squares: Array<CSS.Properties>
 }
 
 const cssStyle: CSS.Properties = {
@@ -20,34 +19,20 @@ const cssStyle: CSS.Properties = {
     margin: 'auto'
 }
 
-let boardSize: number;
-let list: Array<CSS.Properties> = [];
-
-function min(a: number, b: number): number {
-    return a < b ? a : b;
-}
-
 class GameBoard extends React.Component<Props, State>{
+
+    private boardSize: number;
 
     constructor(props: Props){
         super(props);
 
-        this.state = {
-            squares: []
-        };
+        this.boardSize = this.calculateBoardSize();
 
-        boardSize = this.calculateBoardSize();
-
-        this.modifyGameBoardCSS(boardSize);
-    }
-
-    componentDidMount(){
-        this.createSquares(boardSize);
-        this.setState({squares: this.state.squares.concat(list)});
+        this.modifyGameBoardCSS(this.boardSize);
     }
 
     calculateBoardSize(): number {
-        return Math.floor(min(this.props.parentHeight, this.props.parentWidth) * 0.8);
+        return Math.floor(Utility.min(this.props.parentHeight, this.props.parentWidth) * 0.8);
     }
 
     modifyGameBoardCSS(boardSize: number){
@@ -58,41 +43,18 @@ class GameBoard extends React.Component<Props, State>{
         cssStyle.top = String(top).concat('px');
     }
 
-    createSquares(boardSize: number){
-        let squareSize = Math.floor(boardSize/3);
-
-        let colors = [['blue', 'blueviolet', 'black'], ['yellow', 'red', 'green'], ['goldenrod', 'grey', 'white']]
-
-        for(let i = 0; i < colors.length; i++){
-            for(let j = 0; j < colors[i].length; j++){
-                let color = colors[i][j];
-
-                let style: CSS.Properties = {
-                    backgroundColor: color,
-                    height: String(squareSize).concat('px'),
-                    width: String(squareSize).concat('px'),
-                    top: String(i * squareSize).concat('px'),
-                    left: String(j * squareSize).concat('px'),
-                    position: 'absolute'
-                }
-
-                list.push(style);
-            }
-        }
-
-        console.log(list);
-    }
-
     render(){
         return(
             <div className='gameBoard' style={cssStyle}>
-                {
-                    this.state.squares.map((value, index) => (<Square cssStyle={value} key={index} />))
-                }
+                <DotsAndBoxes
+                    parentHeight={this.boardSize} 
+                    parentWidth={this.boardSize}
+                    numberOfRows={2}
+                    numberOfColumns={2}
+                />
             </div>
         )
     }
-
 }
 
 export default GameBoard;
