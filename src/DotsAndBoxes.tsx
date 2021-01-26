@@ -6,6 +6,7 @@ import CSS from 'csstype';
 import Box from './Box';
 import Dot from './Dot';
 import Utility from './Utility';
+import Line from './Line';
 
 type Props = {
     parentHeight: number,
@@ -16,7 +17,8 @@ type Props = {
 
 type State = {
     boxes: Array<CSS.Properties>,
-    dots: Array<CSS.Properties>
+    dots: Array<CSS.Properties>,
+    lines: Array<CSS.Properties>
 }
 
 class DotsAndBoxes extends React.Component<Props, State>{
@@ -26,15 +28,17 @@ class DotsAndBoxes extends React.Component<Props, State>{
 
         this.state = {
             boxes: [],
-            dots: []
+            dots: [],
+            lines: []
         }
     }
 
     componentDidMount(){
         const boxes = this.createBoxes(this.props.parentWidth, this.props.parentHeight, this.props.numberOfRows, this.props.numberOfColumns);
         const dots = this.createDots(this.props.parentWidth, this.props.parentHeight, this.props.numberOfRows, this.props.numberOfColumns);
+        const lines = this.createLines(this.props.parentWidth, this.props.parentHeight, this.props.numberOfRows, this.props.numberOfColumns);
 
-        this.setState({boxes: boxes, dots: dots});
+        this.setState({boxes: boxes, dots: dots, lines: lines});
     }
 
     componentDidUpdate(prevProps: Props){
@@ -44,8 +48,9 @@ class DotsAndBoxes extends React.Component<Props, State>{
             prevProps.numberOfColumns !== this.props.numberOfColumns){
                 const boxes = this.createBoxes(this.props.parentWidth, this.props.parentHeight, this.props.numberOfRows, this.props.numberOfColumns);
                 const dots = this.createDots(this.props.parentWidth, this.props.parentHeight, this.props.numberOfRows, this.props.numberOfColumns);
+                const lines = this.createLines(this.props.parentWidth, this.props.parentHeight, this.props.numberOfRows, this.props.numberOfColumns);
         
-                this.setState({boxes: boxes, dots: dots});  
+                this.setState({boxes: boxes, dots: dots, lines: lines});
             }
     }
     
@@ -60,7 +65,6 @@ class DotsAndBoxes extends React.Component<Props, State>{
     
                 let style: CSS.Properties = {
                     backgroundColor: 'white',
-                    border: '1px solid black',
                     height: String(boxHeight).concat('px'),
                     width: String(boxWidth).concat('px'),
                     top: String(i * boxHeight).concat('px'),
@@ -105,11 +109,55 @@ class DotsAndBoxes extends React.Component<Props, State>{
         return dots;
     }
 
+    private createLines(parentWidth: number, parentHeight: number, numberOfRows: number, numberOfColumns: number): Array<CSS.Properties>{
+        const boxWidth: number = Math.floor(parentWidth/numberOfRows);
+        const boxHeight: number = Math.floor(parentHeight/numberOfColumns);
+
+        const lines: Array<CSS.Properties> = []
+
+        //Horizontal Lines
+        for(let i = 0; i < numberOfRows + 1; i++){
+            for(let j = 0; j < numberOfColumns; j++){
+                let style: CSS.Properties = {
+                    backgroundColor: '#b5cef5',
+                    height: '2px',
+                    width: String(boxWidth).concat('px'),
+                    top: String(Math.floor(i * boxHeight)).concat('px'),
+                    left: String(Math.floor(j * boxWidth)).concat('px'),
+                    position: 'absolute'
+                }
+
+                lines.push(style);
+            }
+        }
+
+        //Vertical Lines
+        for(let i = 0; i < numberOfRows; i++){
+            for(let j = 0; j < numberOfColumns + 1; j++){
+                let style: CSS.Properties = {
+                    backgroundColor: '#b5cef5',
+                    height: String(boxHeight).concat('px'),
+                    width: '2px',
+                    top: String(Math.floor(i * boxHeight)).concat('px'),
+                    left: String(Math.floor(j * boxWidth)).concat('px'),
+                    position: 'absolute'
+                }
+
+                lines.push(style);
+            }
+        }
+
+        return lines;
+    }
+
     render(){
         return(
             <div>
             {
                 this.state.boxes.map((value, index) => (<Box key={index} cssStyle={value} boxId={`box-${index}`} />))
+            }
+            {
+                this.state.lines.map((value, index) => (<Line key={index} cssStyle={value} lineId={`line-${index}`} />))
             }
             {
                 this.state.dots.map((value, index) => (<Dot key={index} cssStyle={value} dotId={`dot-${index}`} />))
