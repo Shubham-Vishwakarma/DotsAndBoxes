@@ -11,32 +11,32 @@ interface Props{
 }
 
 type State = {
+    boardSize: number
     cssStyle: CSS.Properties
 }
 
 class GameBoard extends React.Component<Props, State>{
 
-    private boardSize: number = 0;
-
     constructor(props: Props){
         super(props);
 
         this.state = {
+            boardSize: 0,
             cssStyle: {}
         }
     }
 
     componentDidMount(){
-        this.boardSize = this.calculateBoardSize();
-        const cssStyle = this.modifyGameBoardCSS(this.boardSize);
-        this.setState({cssStyle: cssStyle});
+        const boardSize = this.calculateBoardSize();
+        const cssStyle = this.modifyGameBoardCSS(boardSize);
+        this.setState({boardSize: boardSize, cssStyle: cssStyle});
     }
 
     componentDidUpdate(prevProps: Props){
         if(prevProps.parentHeight !== this.props.parentHeight || prevProps.parentWidth !== this.props.parentWidth){
-            this.boardSize = this.calculateBoardSize();
-            const cssStyle = this.modifyGameBoardCSS(this.boardSize);
-            this.setState({cssStyle: cssStyle});
+            const boardSize = this.calculateBoardSize();
+            const cssStyle = this.modifyGameBoardCSS(boardSize);
+            this.setState({boardSize: boardSize, cssStyle: cssStyle});
         }
     }
 
@@ -59,11 +59,12 @@ class GameBoard extends React.Component<Props, State>{
     }
 
     render(){
+        console.log(`Board Size = ${this.state.boardSize}`)
         return(
             <div className='gameBoard' style={this.state.cssStyle}>
                 <DotsAndBoxes
-                    parentHeight={this.boardSize} 
-                    parentWidth={this.boardSize}
+                    parentHeight={this.state.boardSize} 
+                    parentWidth={this.state.boardSize}
                     numberOfRows={2}
                     numberOfColumns={2}
                 />
