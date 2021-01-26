@@ -59,7 +59,6 @@ class GameBoard extends React.Component<Props, State>{
     }
 
     render(){
-        console.log(`Board Size = ${this.state.boardSize}`)
         return(
             <div className='gameBoard' style={this.state.cssStyle}>
                 <DotsAndBoxes
