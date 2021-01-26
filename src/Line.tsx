@@ -7,6 +7,6 @@ type Props = {
     lineId: string
 }
 
-const Box = ({ cssStyle, lineId } : Props) => ( <div key={lineId} id={lineId} style={cssStyle}></div> );
+const Line = ({ cssStyle, lineId } : Props) => ( <div key={lineId} id={lineId} style={cssStyle}></div> );
 
-export default Box;
+export default Line;
