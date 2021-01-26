@@ -65,22 +65,23 @@ class DotsAndBoxes extends React.Component<Props, State>{
     }
 
     private createDots(parentWidth: number, parentHeight: number, numberOfRows: number, numberOfColumns: number){
-        let boxWidth: number = Math.floor(parentWidth/numberOfRows);
-        let boxHeight: number = Math.floor(parentHeight/numberOfColumns);
-        let numberOfRowDots: number = numberOfRows + 1;
-        let numberOfColumnDots: number = numberOfColumns + 1;
+        const boxWidth: number = Math.floor(parentWidth/numberOfRows);
+        const boxHeight: number = Math.floor(parentHeight/numberOfColumns);
+        const numberOfRowDots: number = numberOfRows + 1;
+        const numberOfColumnDots: number = numberOfColumns + 1;
 
-        let dotRadius: number = Utility.min(boxWidth, boxHeight) * 0.1;
+        const dotDiameter: number = Math.floor(Utility.min(boxWidth, boxHeight) * 0.1);
 
         for(let i = 0; i < numberOfRowDots; i++){
             for(let j = 0; j < numberOfColumnDots; j++){
                 let style: CSS.Properties = {
-                    backgroundColor: 'black',
-                    height: String(dotRadius).concat('px'),
-                    width: String(dotRadius).concat('px'),
+                    backgroundColor: 'white',
+                    border: '2px solid black',
+                    height: String(dotDiameter).concat('px'),
+                    width: String(dotDiameter).concat('px'),
                     borderRadius: '50%',
-                    top: String(i * boxHeight - dotRadius/2).concat('px'),
-                    left: String(j * boxWidth - dotRadius/2).concat('px'),
+                    top: String(Math.floor(i * boxHeight - dotDiameter/2)).concat('px'),
+                    left: String(Math.floor(j * boxWidth - dotDiameter/2)).concat('px'),
                     position: 'absolute'
                 }
     
