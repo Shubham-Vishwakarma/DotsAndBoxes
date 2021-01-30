@@ -7,6 +7,7 @@ import Box from './Box';
 import Dot from './Dot';
 import Utility from './Utility';
 import Line from './Line';
+import ILine, {Direction} from './ILine';
 
 type Props = {
     parentHeight: number,
@@ -18,7 +19,7 @@ type Props = {
 type State = {
     boxes: Array<CSS.Properties>,
     dots: Array<CSS.Properties>,
-    lines: Array<CSS.Properties>
+    lines: Array<ILine>
 }
 
 class DotsAndBoxes extends React.Component<Props, State>{
@@ -109,41 +110,49 @@ class DotsAndBoxes extends React.Component<Props, State>{
         return dots;
     }
 
-    private createLines(parentWidth: number, parentHeight: number, numberOfRows: number, numberOfColumns: number): Array<CSS.Properties>{
+    private createLines(parentWidth: number, parentHeight: number, numberOfRows: number, numberOfColumns: number): Array<ILine>{
         const boxWidth: number = Math.floor(parentWidth/numberOfRows);
         const boxHeight: number = Math.floor(parentHeight/numberOfColumns);
 
-        const lines: Array<CSS.Properties> = []
+        const lines: Array<ILine> = []
 
         //Horizontal Lines
         for(let i = 0; i < numberOfRows + 1; i++){
             for(let j = 0; j < numberOfColumns; j++){
+                const direction = Direction.Horizontal;
+                const id = `${direction}-${i}${j}`;
+
                 let style: CSS.Properties = {
                     backgroundColor: '#b5cef5',
-                    height: '2px',
+                    height: '8px',
+                    minHeight: '8px',
                     width: String(boxWidth).concat('px'),
                     top: String(Math.floor(i * boxHeight)).concat('px'),
                     left: String(Math.floor(j * boxWidth)).concat('px'),
                     position: 'absolute'
                 }
 
-                lines.push(style);
+                lines.push({id: id, direction: direction, row: i, column: j, style: style});
             }
         }
 
         //Vertical Lines
         for(let i = 0; i < numberOfRows; i++){
             for(let j = 0; j < numberOfColumns + 1; j++){
+                const direction = Direction.Vertical;
+                const id = `${direction}-${i}${j}`;
+
                 let style: CSS.Properties = {
                     backgroundColor: '#b5cef5',
                     height: String(boxHeight).concat('px'),
-                    width: '2px',
+                    width: '8px',
+                    minWidth: '8px',
                     top: String(Math.floor(i * boxHeight)).concat('px'),
                     left: String(Math.floor(j * boxWidth)).concat('px'),
-                    position: 'absolute'
+                    position: 'absolute',
                 }
 
-                lines.push(style);
+                lines.push({id: id, direction: direction, row: i, column: j, style: style});
             }
         }
 
@@ -157,7 +166,7 @@ class DotsAndBoxes extends React.Component<Props, State>{
                 this.state.boxes.map((value, index) => (<Box key={index} cssStyle={value} boxId={`box-${index}`} />))
             }
             {
-                this.state.lines.map((value, index) => (<Line key={index} cssStyle={value} lineId={`line-${index}`} />))
+                this.state.lines.map((value, _, array) => (<Line key={value.id} line={value} setState={this.setState.bind(this)} lines={array}/>))
             }
             {
                 this.state.dots.map((value, index) => (<Dot key={index} cssStyle={value} dotId={`dot-${index}`} />))
