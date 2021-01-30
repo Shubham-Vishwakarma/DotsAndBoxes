@@ -10,7 +10,8 @@ interface ILine {
     direction: Direction
     row: number,
     column: number,
-    style: CSS.Properties
+    style: CSS.Properties,
+    selected: boolean
 }
 
 export default ILine;

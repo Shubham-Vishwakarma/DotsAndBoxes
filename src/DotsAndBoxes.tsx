@@ -132,7 +132,7 @@ class DotsAndBoxes extends React.Component<Props, State>{
                     position: 'absolute'
                 }
 
-                lines.push({id: id, direction: direction, row: i, column: j, style: style});
+                lines.push({id: id, direction: direction, row: i, column: j, style: style, selected: false});
             }
         }
 
@@ -152,7 +152,7 @@ class DotsAndBoxes extends React.Component<Props, State>{
                     position: 'absolute',
                 }
 
-                lines.push({id: id, direction: direction, row: i, column: j, style: style});
+                lines.push({id: id, direction: direction, row: i, column: j, style: style, selected: false});
             }
         }
 
