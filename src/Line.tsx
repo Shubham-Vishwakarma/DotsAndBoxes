@@ -16,7 +16,7 @@ function Line(props: Props) {
         if(!line.selected){
             let newLines = lines.map(item => {
                 if(item.id === line.id){
-                    item.style = {...line.style, backgroundColor: 'rgba(0, 0, 0, 0.5)'};
+                    item.style = {...line.style, backgroundColor: 'rgba(0, 38, 97, 0.6)'};
                 }
                 return item;
             });
@@ -29,7 +29,7 @@ function Line(props: Props) {
         if(!line.selected){
             let newLines = lines.map(item => {
                 if(item.id === line.id){
-                    item.style = {...line.style, backgroundColor: 'rgba(181, 206, 245'};
+                    item.style = {...line.style, backgroundColor: '#b5cef5'};
                 }
                 return item;
             });
