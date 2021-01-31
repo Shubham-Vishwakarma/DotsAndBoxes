@@ -8,6 +8,9 @@ import Dot from './Dot';
 import Utility from './Utility';
 import Line from './Line';
 import ILine, {Direction} from './ILine';
+import IDot from './IDot';
+import IBox from './IBox';
+import BackgroundColorContext from './BackgroundColorContext';
 
 type Props = {
     parentHeight: number,
@@ -17,12 +20,14 @@ type Props = {
 }
 
 type State = {
-    boxes: Array<CSS.Properties>,
-    dots: Array<CSS.Properties>,
+    boxes: Array<IBox>,
+    dots: Array<IDot>,
     lines: Array<ILine>
 }
 
 class DotsAndBoxes extends React.Component<Props, State>{
+
+    static contextType = BackgroundColorContext
 
     constructor(props: Props){
         super(props);
@@ -55,16 +60,17 @@ class DotsAndBoxes extends React.Component<Props, State>{
             }
     }
     
-    private createBoxes(parentWidth: number, parentHeight: number, numberOfRows: number, numberOfColumns: number): Array<CSS.Properties>{
+    private createBoxes(parentWidth: number, parentHeight: number, numberOfRows: number, numberOfColumns: number): Array<IBox>{
         let boxWidth: number = Math.floor(parentWidth/numberOfRows);
         let boxHeight: number = Math.floor(parentHeight/numberOfColumns);
     
-        const boxes: Array<CSS.Properties> = [];
+        const boxes: Array<IBox> = [];
     
         for(let i = 0; i < numberOfRows; i++){
             for(let j = 0; j < numberOfColumns; j++){
-    
-                let style: CSS.Properties = {
+                const id = `box-${i}${j}`;
+                
+                const style: CSS.Properties = {
                     backgroundColor: 'white',
                     height: String(boxHeight).concat('px'),
                     width: String(boxWidth).concat('px'),
@@ -73,14 +79,14 @@ class DotsAndBoxes extends React.Component<Props, State>{
                     position: 'absolute'
                 }
     
-                boxes.push(style);
+                boxes.push({id: id, row: i, column: j, style: style, selected: false});
             }
         }
 
         return boxes;
     }
 
-    private createDots(parentWidth: number, parentHeight: number, numberOfRows: number, numberOfColumns: number): Array<CSS.Properties>{
+    private createDots(parentWidth: number, parentHeight: number, numberOfRows: number, numberOfColumns: number): Array<IDot>{
         const boxWidth: number = Math.floor(parentWidth/numberOfRows);
         const boxHeight: number = Math.floor(parentHeight/numberOfColumns);
         const numberOfRowDots: number = numberOfRows + 1;
@@ -88,11 +94,13 @@ class DotsAndBoxes extends React.Component<Props, State>{
 
         const dotDiameter: number = Math.floor(Utility.min(boxWidth, boxHeight) * 0.1);
 
-        const dots: Array<CSS.Properties> = []
+        const dots: Array<IDot> = []
 
         for(let i = 0; i < numberOfRowDots; i++){
             for(let j = 0; j < numberOfColumnDots; j++){
-                let style: CSS.Properties = {
+                const id = `dot-${i}${j}`;
+
+                const style: CSS.Properties = {
                     backgroundColor: 'white',
                     border: '2px solid #b5cef5',
                     height: String(dotDiameter).concat('px'),
@@ -103,7 +111,7 @@ class DotsAndBoxes extends React.Component<Props, State>{
                     position: 'absolute'
                 }
     
-                dots.push(style);
+                dots.push({id: id,row: i, column: j, style: style, selected: false});
             }
         }
 
@@ -161,17 +169,136 @@ class DotsAndBoxes extends React.Component<Props, State>{
         return lines;
     }
 
+    private onMouseDown(line: ILine){
+        //Update Lines
+        const lines = this.state.lines.map(item => {
+            if(item.id === line.id){
+                item.style = {...line.style, backgroundColor: this.context.backgroundColor};
+                item.selected = true;
+            }
+            return item;
+        });
+
+        //Update Dots
+        let dots: Array<IDot> = []
+        switch(line.direction){
+            case Direction.Horizontal:
+                dots = this.state.dots.map(item => {
+                    if((item.row === line.row && item.column === line.column) ||
+                        (item.row === line.row && item.column === line.column + 1))
+                    {
+                        item.style = {...item.style, border: '2px solid rgba(0, 38, 97, 0.6)'};
+                        item.selected = true;
+                    }
+                    return item;
+                });
+                break;
+            case Direction.Vertical: 
+                dots = this.state.dots.map(item => {
+                    if((item.row === line.row && item.column === line.column) ||
+                        (item.row === line.row + 1 && item.column === line.column))
+                    {
+                        item.style = {...item.style, border: '2px solid rgba(0, 38, 97, 0.6)'};
+                        item.selected = true;
+                    }
+                    return item;
+                });
+                break;
+        }
+
+        this.context.changeBackgroundColor(this.context.backgroundColor);
+
+        this.setState({lines: lines, dots: dots})
+    }
+
+    private onMouseEnter(line: ILine){
+        const lines = this.state.lines.map(item => {
+            if(item.id === line.id){
+                item.style = {...line.style, backgroundColor: 'rgba(0, 38, 97, 0.6)'};
+            }
+            return item;
+        });
+
+        //Update Dots
+        let dots: Array<IDot> = []
+        switch(line.direction){
+            case Direction.Horizontal:
+                dots = this.state.dots.map(item => {
+                    if((item.row === line.row && item.column === line.column) ||
+                        (item.row === line.row && item.column === line.column + 1))
+                    {
+                        item.style = {...item.style, border: '2px solid rgba(0, 38, 97, 0.6)'};
+                    }
+                    return item;
+                });
+                break;
+            case Direction.Vertical: 
+                dots = this.state.dots.map(item => {
+                    if((item.row === line.row && item.column === line.column) ||
+                        (item.row === line.row + 1 && item.column === line.column))
+                    {
+                        item.style = {...item.style, border: '2px solid rgba(0, 38, 97, 0.6)'};
+                    }
+                    return item;
+                });
+                break;
+        }
+
+        this.setState({lines: lines, dots: dots});
+    }
+
+    private onMouseLeave(line: ILine){
+        const lines = this.state.lines.map(item => {
+            if(item.id === line.id){
+                item.style = {...line.style, backgroundColor: '#b5cef5'};
+            }
+            return item;
+        });
+
+        //Update Dots
+        let dots: Array<IDot> = []
+        switch(line.direction){
+            case Direction.Horizontal:
+                dots = this.state.dots.map(item => {
+                    if((item.row === line.row && item.column === line.column) ||
+                        (item.row === line.row && item.column === line.column + 1))
+                    {
+                        item.style = {...item.style, border: '2px solid #b5cef5',};
+                    }
+                    return item;
+                });
+                break;
+            case Direction.Vertical: 
+                dots = this.state.dots.map(item => {
+                    if((item.row === line.row && item.column === line.column) ||
+                        (item.row === line.row + 1 && item.column === line.column))
+                    {
+                        item.style = {...item.style, border: '2px solid #b5cef5',};
+                    }
+                    return item;
+                });
+                break;
+        }
+
+        this.setState({lines: lines, dots: dots});
+    }
+
     render(){
         return(
             <div>
             {
-                this.state.boxes.map((value, index) => (<Box key={index} cssStyle={value} boxId={`box-${index}`} />))
+                this.state.boxes.map((value) => (<Box key={value.id} cssStyle={value.style} boxId={value.id} />))
             }
             {
-                this.state.lines.map((value, _, array) => (<Line key={value.id} line={value} setState={this.setState.bind(this)} lines={array}/>))
+                this.state.lines.map((line) => (<Line  key={line.id} 
+                                                        line={line} 
+                                                        onMouseDown={this.onMouseDown.bind(this)}
+                                                        onMouseEnter={this.onMouseEnter.bind(this)}
+                                                        onMouseLeave={this.onMouseLeave.bind(this)}
+                                                    />))
             }
             {
-                this.state.dots.map((value, index) => (<Dot key={index} cssStyle={value} dotId={`dot-${index}`} />))
+                this.state.dots.map((dot) => (<Dot key={dot.id} dot={dot} />))
             }
             </div>
         );

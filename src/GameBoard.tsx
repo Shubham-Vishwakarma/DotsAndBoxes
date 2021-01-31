@@ -64,8 +64,8 @@ class GameBoard extends React.Component<Props, State>{
                 <DotsAndBoxes
                     parentHeight={this.state.boardSize} 
                     parentWidth={this.state.boardSize}
-                    numberOfRows={2}
-                    numberOfColumns={2}
+                    numberOfRows={3}
+                    numberOfColumns={3}
                 />
             </div>
         )
