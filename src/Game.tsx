@@ -16,7 +16,7 @@ interface Dimension{
 function Game(){
 
     const [windowDimensions, setWindowDimensions] = useState<Dimension>({height: window.innerHeight, width: window.innerWidth});
-    const [gameDimensions, setGameDimensions] = useState<Dimension>({height: window.innerHeight, width: Math.floor(windowDimensions.width * 0.6)});
+    const [gameDimensions, setGameDimensions] = useState<Dimension>({height: window.innerHeight, width: Math.floor(windowDimensions.width)});
     const [gameCssStyle, setGameCssStyle] = useState<CSS.Properties>({});
     const backgroundColorContext =  useContext(BackgroundColorContext);
 
@@ -37,7 +37,7 @@ function Game(){
     //Handle Game Window Resize
     useEffect(() => {
         const gameHeight = windowDimensions.height;
-        const gameWidth = Math.floor(windowDimensions.width * 0.6);
+        const gameWidth = windowDimensions.width < 800 ? Math.floor(windowDimensions.width) : Math.floor(windowDimensions.width * 0.6);
 
         setGameDimensions({
             height: gameHeight,
