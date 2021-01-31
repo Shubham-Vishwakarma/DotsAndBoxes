@@ -94,7 +94,7 @@ class DotsAndBoxes extends React.Component<Props, State>{
             for(let j = 0; j < numberOfColumnDots; j++){
                 let style: CSS.Properties = {
                     backgroundColor: 'white',
-                    border: '2px solid black',
+                    border: '2px solid #b5cef5',
                     height: String(dotDiameter).concat('px'),
                     width: String(dotDiameter).concat('px'),
                     borderRadius: '50%',

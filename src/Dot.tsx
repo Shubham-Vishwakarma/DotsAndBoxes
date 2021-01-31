@@ -7,14 +7,16 @@ type Props = {
     dotId: string
 }
 
-const Dot = ({ cssStyle, dotId } : Props) => {
+const Dot = (props : Props) => {
+
+    const { cssStyle, dotId } = props;
 
     const stringDotDiameter = String(cssStyle.height); 
     const outerDotDiameter = parseInt(stringDotDiameter.substr(0, stringDotDiameter.length - 2));
     const innerDotDiameter = Math.floor(outerDotDiameter * 0.7);
 
     const innerDotCssStyle: CSS.Properties = {
-        backgroundColor: "black",
+        backgroundColor: "#b5cef5",
         height: String(Math.floor(innerDotDiameter)).concat('px'),
         width: String(Math.floor(innerDotDiameter)).concat('px'),
         borderRadius: '50%',
