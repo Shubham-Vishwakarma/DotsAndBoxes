@@ -5,7 +5,9 @@ interface IBox {
     row: number,
     column: number,
     style: CSS.Properties,
-    selected: boolean
+    selected: boolean,
+    count: number,
+    backgroundColor: string
 }
 
 export default IBox;

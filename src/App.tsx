@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 function App(){
 
-    const colors: string[] = ['red', 'blue', 'green', 'yellow'];
+    const colors: string[] = ['red', 'blue', 'green', '#FF8100'];
 
     const changeBackgroundColor = (lastBackgroundColor: string) => {
         const lastIndex: number = colors.indexOf(lastBackgroundColor);

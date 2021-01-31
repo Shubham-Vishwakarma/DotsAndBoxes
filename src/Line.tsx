@@ -1,8 +1,6 @@
 import './index.css'
 
 import ILine from './ILine';
-// import { useContext } from 'react';
-// import BackgroundColorContext from './BackgroundColorContext';
 
 type Props = {
     line: ILine
@@ -14,7 +12,6 @@ type Props = {
 function Line(props: Props) { 
 
     let { line, onMouseDown, onMouseEnter, onMouseLeave } =  props;
-    // const backgroundColorContext = useContext(BackgroundColorContext);
 
     return (
         <div key={line.id} id={line.id} style={line.style} 

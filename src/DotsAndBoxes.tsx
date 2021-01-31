@@ -79,7 +79,7 @@ class DotsAndBoxes extends React.Component<Props, State>{
                     position: 'absolute'
                 }
     
-                boxes.push({id: id, row: i, column: j, style: style, selected: false});
+                boxes.push({id: id, row: i, column: j, style: style, selected: false, count: 0, backgroundColor: 'white'});
             }
         }
 
@@ -206,9 +206,40 @@ class DotsAndBoxes extends React.Component<Props, State>{
                 break;
         }
 
+        //Update Boxes
+        let boxes: Array<IBox> = []
+        switch(line.direction){
+            case Direction.Horizontal: 
+                boxes = this.state.boxes.map(item => {
+                    if((item.row === line.row && item.column === line.column) ||
+                        (item.row === line.row - 1 && item.column === line.column))
+                    {
+                        item.count++;
+                        item.selected = item.count === 4;
+                        item.style = item.selected ? {...item.style, backgroundColor: this.context.backgroundColor} : {...item.style};
+                        item.backgroundColor = item.selected ? this.context.backgroundColor : 'white';
+                    }
+                    return item;
+                });
+                break;
+            case Direction.Vertical: 
+                boxes = this.state.boxes.map(item => {
+                    if((item.row === line.row && item.column === line.column) ||
+                        (item.row === line.row && item.column === line.column - 1))
+                    {
+                        item.count++;
+                        item.selected = item.count === 4;
+                        item.style = item.selected ? {...item.style, backgroundColor: this.context.backgroundColor} : {...item.style};
+                        item.backgroundColor = item.selected ? this.context.backgroundColor : 'white';
+                    }
+                    return item;
+                });
+                break;
+        }
+
         this.context.changeBackgroundColor(this.context.backgroundColor);
 
-        this.setState({lines: lines, dots: dots})
+        this.setState({lines: lines, dots: dots, boxes: boxes})
     }
 
     private onMouseEnter(line: ILine){
@@ -287,7 +318,7 @@ class DotsAndBoxes extends React.Component<Props, State>{
         return(
             <div>
             {
-                this.state.boxes.map((value) => (<Box key={value.id} cssStyle={value.style} boxId={value.id} />))
+                this.state.boxes.map((box) => (<Box key={box.id} box={box} />))
             }
             {
                 this.state.lines.map((line) => (<Line  key={line.id} 

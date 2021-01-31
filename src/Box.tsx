@@ -1,12 +1,12 @@
 import './index.css'
 
 import CSS from 'csstype';
+import IBox from './IBox';
 
 type Props = {
-    cssStyle: CSS.Properties,
-    boxId: string
+    box: IBox
 }
 
-const Box = ({ cssStyle, boxId } : Props) => ( <div key={boxId} id={boxId} style={cssStyle}></div> );
+const Box = ({ box } : Props) => ( <div key={box.id} id={box.id} style={box.style}></div> );
 
 export default Box;
