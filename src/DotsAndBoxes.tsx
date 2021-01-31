@@ -5,11 +5,12 @@ import React from 'react';
 import Box from './Box';
 import Dot from './Dot';
 import Line from './Line';
-import ILine, {Direction} from './ILine';
+import ILine from './ILine';
 import IDot from './IDot';
 import IBox from './IBox';
 import BackgroundColorContext from './BackgroundColorContext';
 import DotsAndBoxesHelper from './DotAndBoxesHelper';
+import DotsAndBoxesUpdater from './DotsAndBoxesUpdater';
 
 type Props = {
     parentHeight: number,
@@ -60,72 +61,9 @@ class DotsAndBoxes extends React.Component<Props, State>{
     }
     
     private onMouseDown(line: ILine){
-        //Update Lines
-        const lines = this.state.lines.map(item => {
-            if(item.id === line.id){
-                item.style = {...line.style, backgroundColor: this.context.backgroundColor};
-                item.selected = true;
-            }
-            return item;
-        });
-
-        //Update Dots
-        let dots: Array<IDot> = []
-        switch(line.direction){
-            case Direction.Horizontal:
-                dots = this.state.dots.map(item => {
-                    if((item.row === line.row && item.column === line.column) ||
-                        (item.row === line.row && item.column === line.column + 1))
-                    {
-                        item.style = {...item.style, border: '2px solid rgba(0, 38, 97, 0.6)'};
-                        item.selected = true;
-                    }
-                    return item;
-                });
-                break;
-            case Direction.Vertical: 
-                dots = this.state.dots.map(item => {
-                    if((item.row === line.row && item.column === line.column) ||
-                        (item.row === line.row + 1 && item.column === line.column))
-                    {
-                        item.style = {...item.style, border: '2px solid rgba(0, 38, 97, 0.6)'};
-                        item.selected = true;
-                    }
-                    return item;
-                });
-                break;
-        }
-
-        //Update Boxes
-        let boxes: Array<IBox> = []
-        switch(line.direction){
-            case Direction.Horizontal: 
-                boxes = this.state.boxes.map(item => {
-                    if((item.row === line.row && item.column === line.column) ||
-                        (item.row === line.row - 1 && item.column === line.column))
-                    {
-                        item.count++;
-                        item.selected = item.count === 4;
-                        item.style = item.selected ? {...item.style, backgroundColor: this.context.backgroundColor} : {...item.style};
-                        item.backgroundColor = item.selected ? this.context.backgroundColor : 'white';
-                    }
-                    return item;
-                });
-                break;
-            case Direction.Vertical: 
-                boxes = this.state.boxes.map(item => {
-                    if((item.row === line.row && item.column === line.column) ||
-                        (item.row === line.row && item.column === line.column - 1))
-                    {
-                        item.count++;
-                        item.selected = item.count === 4;
-                        item.style = item.selected ? {...item.style, backgroundColor: this.context.backgroundColor} : {...item.style};
-                        item.backgroundColor = item.selected ? this.context.backgroundColor : 'white';
-                    }
-                    return item;
-                });
-                break;
-        }
+        const lines = DotsAndBoxesUpdater.updateLines(this.state.lines, line, this.context.backgroundColor, true);
+        const dots: Array<IDot> = DotsAndBoxesUpdater.updateDots(this.state.dots, line, 'rgba(0, 38, 97, 0.6)', true)
+        const boxes: Array<IBox> = DotsAndBoxesUpdater.updateBoxes(this.state.boxes, line, this.context.backgroundColor);
 
         this.context.changeBackgroundColor(this.context.backgroundColor);
 
@@ -133,73 +71,15 @@ class DotsAndBoxes extends React.Component<Props, State>{
     }
 
     private onMouseEnter(line: ILine){
-        const lines = this.state.lines.map(item => {
-            if(item.id === line.id){
-                item.style = {...line.style, backgroundColor: 'rgba(0, 38, 97, 0.6)'};
-            }
-            return item;
-        });
-
-        //Update Dots
-        let dots: Array<IDot> = []
-        switch(line.direction){
-            case Direction.Horizontal:
-                dots = this.state.dots.map(item => {
-                    if((item.row === line.row && item.column === line.column) ||
-                        (item.row === line.row && item.column === line.column + 1))
-                    {
-                        item.style = {...item.style, border: '2px solid rgba(0, 38, 97, 0.6)'};
-                    }
-                    return item;
-                });
-                break;
-            case Direction.Vertical: 
-                dots = this.state.dots.map(item => {
-                    if((item.row === line.row && item.column === line.column) ||
-                        (item.row === line.row + 1 && item.column === line.column))
-                    {
-                        item.style = {...item.style, border: '2px solid rgba(0, 38, 97, 0.6)'};
-                    }
-                    return item;
-                });
-                break;
-        }
-
+        const lines = DotsAndBoxesUpdater.updateLines(this.state.lines, line, 'rgba(0, 38, 97, 0.6)', false);
+        const dots: Array<IDot> = DotsAndBoxesUpdater.updateDots(this.state.dots, line, 'rgba(0, 38, 97, 0.6)', false);
+        
         this.setState({lines: lines, dots: dots});
     }
 
     private onMouseLeave(line: ILine){
-        const lines = this.state.lines.map(item => {
-            if(item.id === line.id){
-                item.style = {...line.style, backgroundColor: '#b5cef5'};
-            }
-            return item;
-        });
-
-        //Update Dots
-        let dots: Array<IDot> = []
-        switch(line.direction){
-            case Direction.Horizontal:
-                dots = this.state.dots.map(item => {
-                    if((item.row === line.row && item.column === line.column) ||
-                        (item.row === line.row && item.column === line.column + 1))
-                    {
-                        item.style = {...item.style, border: '2px solid #b5cef5',};
-                    }
-                    return item;
-                });
-                break;
-            case Direction.Vertical: 
-                dots = this.state.dots.map(item => {
-                    if((item.row === line.row && item.column === line.column) ||
-                        (item.row === line.row + 1 && item.column === line.column))
-                    {
-                        item.style = {...item.style, border: '2px solid #b5cef5',};
-                    }
-                    return item;
-                });
-                break;
-        }
+        const lines = DotsAndBoxesUpdater.updateLines(this.state.lines, line, '#b5cef5', false);
+        const dots: Array<IDot> = DotsAndBoxesUpdater.updateDots(this.state.dots, line, '#b5cef5', false);
 
         this.setState({lines: lines, dots: dots});
     }
