@@ -1,6 +1,5 @@
 import './index.css'
 
-import CSS from 'csstype';
 import IBox from './IBox';
 
 type Props = {
