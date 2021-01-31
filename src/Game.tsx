@@ -5,7 +5,8 @@ import './index.css'
 import CSS from 'csstype';
 
 import GameBoard from './GameBoard'
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import BackgroundColorContext from './BackgroundColorContext';
 
 interface Dimension{
     height: number,
@@ -17,6 +18,7 @@ function Game(){
     const [windowDimensions, setWindowDimensions] = useState<Dimension>({height: window.innerHeight, width: window.innerWidth});
     const [gameDimensions, setGameDimensions] = useState<Dimension>({height: window.innerHeight, width: Math.floor(windowDimensions.width * 0.6)});
     const [gameCssStyle, setGameCssStyle] = useState<CSS.Properties>({});
+    const backgroundColorContext =  useContext(BackgroundColorContext);
 
     // Handle window resize
     useEffect(() => {
@@ -43,13 +45,13 @@ function Game(){
         });
 
         setGameCssStyle({
+            backgroundColor: backgroundColorContext.backgroundColor,
             height: String(gameHeight).concat('px'),
             width: String(gameWidth).concat('px'),
-            backgroundColor: 'red',
             position: 'relative',
             margin: 'auto'
         });
-    }, [windowDimensions]);
+    }, [windowDimensions, backgroundColorContext.backgroundColor]);
 
     return (
         <div className='gameSection' style={gameCssStyle}>

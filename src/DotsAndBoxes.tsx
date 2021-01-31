@@ -126,8 +126,9 @@ class DotsAndBoxes extends React.Component<Props, State>{
                     backgroundColor: '#b5cef5',
                     height: '8px',
                     minHeight: '8px',
+                    border: '4px solid #b5cef5',
                     width: String(boxWidth).concat('px'),
-                    top: String(Math.floor(i * boxHeight)).concat('px'),
+                    top: String(Math.floor(i * boxHeight - 6)).concat('px'),
                     left: String(Math.floor(j * boxWidth)).concat('px'),
                     position: 'absolute'
                 }
@@ -147,8 +148,9 @@ class DotsAndBoxes extends React.Component<Props, State>{
                     height: String(boxHeight).concat('px'),
                     width: '8px',
                     minWidth: '8px',
+                    border: '4px solid #b5cef5',
                     top: String(Math.floor(i * boxHeight)).concat('px'),
-                    left: String(Math.floor(j * boxWidth)).concat('px'),
+                    left: String(Math.floor(j * boxWidth - 6)).concat('px'),
                     position: 'absolute',
                 }
 

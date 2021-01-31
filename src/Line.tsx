@@ -1,6 +1,8 @@
 import './index.css'
 
 import ILine from './ILine';
+import { useContext } from 'react';
+import BackgroundColorContext from './BackgroundColorContext';
 
 type Props = {
     line: ILine
@@ -11,6 +13,7 @@ type Props = {
 function Line(props: Props) { 
 
     let { line, setState, lines } =  props;
+    const backgroundColorContext = useContext(BackgroundColorContext);
 
     const OnMouseEnter = (line: ILine) => {
         if(!line.selected){
@@ -39,15 +42,19 @@ function Line(props: Props) {
     }
 
     const OnMouseDown = (line: ILine) => {
-        let newLines = lines.map(item => {
-            if(item.id === line.id){
-                item.style = {...line.style, backgroundColor: '#002661'};
-                item.selected = true;
-            }
-            return item;
-        });
+        if(!line.selected){
+            let newLines = lines.map(item => {
+                if(item.id === line.id){
+                    item.style = {...line.style, backgroundColor: backgroundColorContext.backgroundColor};
+                    item.selected = true;
+                }
+                return item;
+            });
 
-        setState({lines: newLines});
+            backgroundColorContext.changeBackgroundColor(backgroundColorContext.backgroundColor);
+
+            setState({lines: newLines});
+        }
     }
 
     return (
