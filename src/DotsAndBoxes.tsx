@@ -1,16 +1,15 @@
 import './index.css'
 
 import React from 'react';
-import CSS from 'csstype';
 
 import Box from './Box';
 import Dot from './Dot';
-import Utility from './Utility';
 import Line from './Line';
 import ILine, {Direction} from './ILine';
 import IDot from './IDot';
 import IBox from './IBox';
 import BackgroundColorContext from './BackgroundColorContext';
+import DotsAndBoxesHelper from './DotAndBoxesHelper';
 
 type Props = {
     parentHeight: number,
@@ -40,9 +39,9 @@ class DotsAndBoxes extends React.Component<Props, State>{
     }
 
     componentDidMount(){
-        const boxes = this.createBoxes(this.props.parentWidth, this.props.parentHeight, this.props.numberOfRows, this.props.numberOfColumns);
-        const dots = this.createDots(this.props.parentWidth, this.props.parentHeight, this.props.numberOfRows, this.props.numberOfColumns);
-        const lines = this.createLines(this.props.parentWidth, this.props.parentHeight, this.props.numberOfRows, this.props.numberOfColumns);
+        const boxes = DotsAndBoxesHelper.createBoxes(this.props.parentWidth, this.props.parentHeight, this.props.numberOfRows, this.props.numberOfColumns);
+        const dots = DotsAndBoxesHelper.createDots(this.props.parentWidth, this.props.parentHeight, this.props.numberOfRows, this.props.numberOfColumns);
+        const lines = DotsAndBoxesHelper.createLines(this.props.parentWidth, this.props.parentHeight, this.props.numberOfRows, this.props.numberOfColumns);
 
         this.setState({boxes: boxes, dots: dots, lines: lines});
     }
@@ -52,188 +51,14 @@ class DotsAndBoxes extends React.Component<Props, State>{
             prevProps.parentHeight !== this.props.parentHeight ||
             prevProps.numberOfRows !== this.props.numberOfRows ||
             prevProps.numberOfColumns !== this.props.numberOfColumns){
-                const boxes = this.updateBoxes(this.props.parentWidth, this.props.parentHeight, this.props.numberOfRows, this.props.numberOfColumns);
-                const dots = this.updateDots(this.props.parentWidth, this.props.parentHeight, this.props.numberOfRows, this.props.numberOfColumns);
-                const lines = this.updateLines(this.props.parentWidth, this.props.parentHeight, this.props.numberOfRows, this.props.numberOfColumns);
+                const boxes = DotsAndBoxesHelper.updateBoxes(this.props.parentWidth, this.props.parentHeight, this.props.numberOfRows, this.props.numberOfColumns, this.state.boxes);
+                const dots = DotsAndBoxesHelper.updateDots(this.props.parentWidth, this.props.parentHeight, this.props.numberOfRows, this.props.numberOfColumns, this.state.dots);
+                const lines = DotsAndBoxesHelper.updateLines(this.props.parentWidth, this.props.parentHeight, this.props.numberOfRows, this.props.numberOfColumns, this.state.lines);
         
                 this.setState({boxes: boxes, dots: dots, lines: lines});
             }
     }
     
-    private createBoxes(parentWidth: number, parentHeight: number, numberOfRows: number, numberOfColumns: number): Array<IBox>{
-        let boxWidth: number = Math.floor(parentWidth/numberOfRows);
-        let boxHeight: number = Math.floor(parentHeight/numberOfColumns);
-    
-        const boxes: Array<IBox> = [];
-    
-        for(let i = 0; i < numberOfRows; i++){
-            for(let j = 0; j < numberOfColumns; j++){
-                const id = `box-${i}${j}`;
-                
-                const style: CSS.Properties = {
-                    backgroundColor: 'white',
-                    height: String(boxHeight).concat('px'),
-                    width: String(boxWidth).concat('px'),
-                    top: String(i * boxHeight).concat('px'),
-                    left: String(j * boxWidth).concat('px'),
-                    position: 'absolute'
-                }
-    
-                boxes.push({id: id, row: i, column: j, style: style, selected: false, count: 0, backgroundColor: 'white'});
-            }
-        }
-
-        return boxes;
-    }
-
-    private createDots(parentWidth: number, parentHeight: number, numberOfRows: number, numberOfColumns: number): Array<IDot>{
-        const boxWidth: number = Math.floor(parentWidth/numberOfRows);
-        const boxHeight: number = Math.floor(parentHeight/numberOfColumns);
-        const numberOfRowDots: number = numberOfRows + 1;
-        const numberOfColumnDots: number = numberOfColumns + 1;
-
-        const dotDiameter: number = Math.floor(Utility.min(boxWidth, boxHeight) * 0.1);
-
-        const dots: Array<IDot> = []
-
-        for(let i = 0; i < numberOfRowDots; i++){
-            for(let j = 0; j < numberOfColumnDots; j++){
-                const id = `dot-${i}${j}`;
-
-                const style: CSS.Properties = {
-                    backgroundColor: 'white',
-                    border: '2px solid #b5cef5',
-                    height: String(dotDiameter).concat('px'),
-                    width: String(dotDiameter).concat('px'),
-                    borderRadius: '50%',
-                    top: String(Math.floor(i * boxHeight - dotDiameter/2)).concat('px'),
-                    left: String(Math.floor(j * boxWidth - dotDiameter/2)).concat('px'),
-                    position: 'absolute'
-                }
-    
-                dots.push({id: id,row: i, column: j, style: style, selected: false});
-            }
-        }
-
-        return dots;
-    }
-
-    private createLines(parentWidth: number, parentHeight: number, numberOfRows: number, numberOfColumns: number): Array<ILine>{
-        const boxWidth: number = Math.floor(parentWidth/numberOfRows);
-        const boxHeight: number = Math.floor(parentHeight/numberOfColumns);
-
-        const lines: Array<ILine> = []
-
-        //Horizontal Lines
-        for(let i = 0; i < numberOfRows + 1; i++){
-            for(let j = 0; j < numberOfColumns; j++){
-                const direction = Direction.Horizontal;
-                const id = `${direction}-${i}${j}`;
-
-                let style: CSS.Properties = {
-                    backgroundColor: '#b5cef5',
-                    height: '8px',
-                    minHeight: '8px',
-                    border: '4px solid #b5cef5',
-                    width: String(boxWidth).concat('px'),
-                    top: String(Math.floor(i * boxHeight - 6)).concat('px'),
-                    left: String(Math.floor(j * boxWidth)).concat('px'),
-                    position: 'absolute'
-                }
-
-                lines.push({id: id, direction: direction, row: i, column: j, style: style, selected: false});
-            }
-        }
-
-        //Vertical Lines
-        for(let i = 0; i < numberOfRows; i++){
-            for(let j = 0; j < numberOfColumns + 1; j++){
-                const direction = Direction.Vertical;
-                const id = `${direction}-${i}${j}`;
-
-                let style: CSS.Properties = {
-                    backgroundColor: '#b5cef5',
-                    height: String(boxHeight).concat('px'),
-                    width: '8px',
-                    minWidth: '8px',
-                    border: '4px solid #b5cef5',
-                    top: String(Math.floor(i * boxHeight)).concat('px'),
-                    left: String(Math.floor(j * boxWidth - 6)).concat('px'),
-                    position: 'absolute',
-                }
-
-                lines.push({id: id, direction: direction, row: i, column: j, style: style, selected: false});
-            }
-        }
-
-        return lines;
-    }
-
-    private updateBoxes(parentWidth: number, parentHeight: number, numberOfRows: number, numberOfColumns: number): Array<IBox>{
-        let boxWidth: number = Math.floor(parentWidth/numberOfRows);
-        let boxHeight: number = Math.floor(parentHeight/numberOfColumns);
-    
-        const boxes: Array<IBox> = this.state.boxes.map(box => {
-            box.style = {...box.style, 
-                            height: String(boxHeight).concat('px'), 
-                            width: String(boxWidth).concat('px'),
-                            top: String(box.row * boxHeight).concat('px'),
-                            left: String(box.column * boxWidth).concat('px'),}
-            return box;
-        });
-
-        return boxes;
-    }
-
-    private updateDots(parentWidth: number, parentHeight: number, numberOfRows: number, numberOfColumns: number): Array<IDot>{
-        const boxWidth: number = Math.floor(parentWidth/numberOfRows);
-        const boxHeight: number = Math.floor(parentHeight/numberOfColumns);
-        
-        const dotDiameter: number = Math.floor(Utility.min(boxWidth, boxHeight) * 0.1);
-
-        const dots: Array<IDot> = this.state.dots.map(dot => {
-            dot.style = {
-                            ...dot.style,
-                            height: String(dotDiameter).concat('px'),
-                            width: String(dotDiameter).concat('px'),
-                            top: String(Math.floor(dot.row * boxHeight - dotDiameter/2)).concat('px'),
-                            left: String(Math.floor(dot.column * boxWidth - dotDiameter/2)).concat('px'),
-                        };
-            return dot;
-        });
-
-        return dots;
-    }
-
-    private updateLines(parentWidth: number, parentHeight: number, numberOfRows: number, numberOfColumns: number): Array<ILine>{
-        const boxWidth: number = Math.floor(parentWidth/numberOfRows);
-        const boxHeight: number = Math.floor(parentHeight/numberOfColumns);
-
-        const lines: Array<ILine> = this.state.lines.map(line => {
-            switch(line.direction){
-                case Direction.Horizontal:
-                    line.style = {
-                        ...line.style,
-                        width: String(boxWidth).concat('px'),
-                        top: String(Math.floor(line.row * boxHeight - 6)).concat('px'),
-                        left: String(Math.floor(line.column * boxWidth)).concat('px'),
-                    }
-                    break;
-                case Direction.Vertical:
-                    line.style = {
-                        ...line.style,
-                        height: String(boxHeight).concat('px'),
-                        top: String(Math.floor(line.row * boxHeight)).concat('px'),
-                        left: String(Math.floor(line.column * boxWidth - 6)).concat('px'),
-                    }
-                    break;
-            }
-            return line;
-        });
-
-        return lines;
-    }
-
     private onMouseDown(line: ILine){
         //Update Lines
         const lines = this.state.lines.map(item => {
