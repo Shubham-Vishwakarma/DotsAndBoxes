@@ -9,6 +9,7 @@ import { useContext, useEffect, useState } from 'react';
 import BackgroundColorContext from './BackgroundColorContext';
 import GameOverDialog from './GameOverDialog';
 import GameOverContext from './GameOverContext';
+import NewGameDialog from './NewGameDialog';
 
 interface Dimension{
     height: number,
@@ -59,6 +60,7 @@ function Game(){
 
     return (
         <div className='gameSection' style={gameCssStyle}>
+            <NewGameDialog parentWidth={windowDimensions.width} parentHeight={windowDimensions.height} isNewGame={true}/>
             <GameBoard parentWidth={gameDimensions.width} parentHeight={gameDimensions.height} />
             <GameOverDialog parentWidth={windowDimensions.width} parentHeight={windowDimensions.height} isGameOver={gameOverContext.isGameOver}/>
         </div>
