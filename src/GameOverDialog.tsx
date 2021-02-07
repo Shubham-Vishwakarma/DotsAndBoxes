@@ -30,9 +30,6 @@ function GameOverDialog(props: Props){
         setModalStyle(modalStyle);
         setWinner(winner);
 
-
-        console.log('aaaa');
-
     // eslint-disable-next-line
     },[props.isGameOver]);
 
