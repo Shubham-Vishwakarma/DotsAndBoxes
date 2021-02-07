@@ -11,6 +11,7 @@ import IBox from './IBox';
 import BackgroundColorContext from './BackgroundColorContext';
 import DotsAndBoxesHelper from './DotAndBoxesHelper';
 import DotsAndBoxesUpdater from './DotsAndBoxesUpdater';
+import GameOverContext from './GameOverContext';
 
 type Props = {
     parentHeight: number,
@@ -22,34 +23,34 @@ type Props = {
 function DotsAndBoxes(props: Props){
 
     const backgroundColorContext = useContext(BackgroundColorContext);
+    const gameOverContext = useContext(GameOverContext);
 
     const [boxes, setBoxes] = useState<Array<IBox>>([]);
     const [dots, setDots] = useState<Array<IDot>>([]);
     const [lines, setLines] = useState<Array<ILine>>([]);
 
-    useEffect(
-        () => {
-            if(boxes.length === 0 && dots.length === 0 && lines.length === 0){
-                const nboxes = DotsAndBoxesHelper.createBoxes(props.parentWidth, props.parentHeight, props.numberOfRows, props.numberOfColumns);
-                const ndots = DotsAndBoxesHelper.createDots(props.parentWidth, props.parentHeight, props.numberOfRows, props.numberOfColumns);
-                const nlines = DotsAndBoxesHelper.createLines(props.parentWidth, props.parentHeight, props.numberOfRows, props.numberOfColumns);
+    useEffect(() => {
+        if(boxes.length === 0 && dots.length === 0 && lines.length === 0){
+            const nboxes = DotsAndBoxesHelper.createBoxes(props.parentWidth, props.parentHeight, props.numberOfRows, props.numberOfColumns);
+            const ndots = DotsAndBoxesHelper.createDots(props.parentWidth, props.parentHeight, props.numberOfRows, props.numberOfColumns);
+            const nlines = DotsAndBoxesHelper.createLines(props.parentWidth, props.parentHeight, props.numberOfRows, props.numberOfColumns);
 
-                setBoxes(nboxes);
-                setDots(ndots);
-                setLines(nlines);
-            }
-            else 
-            {
-                const nboxes = DotsAndBoxesHelper.updateBoxes(props.parentWidth, props.parentHeight, props.numberOfRows, props.numberOfColumns, boxes);
-                const ndots = DotsAndBoxesHelper.updateDots(props.parentWidth, props.parentHeight, props.numberOfRows, props.numberOfColumns, dots);
-                const nlines = DotsAndBoxesHelper.updateLines(props.parentWidth, props.parentHeight, props.numberOfRows, props.numberOfColumns, lines);
-           
-                setBoxes(nboxes);
-                setDots(ndots);
-                setLines(nlines);
-            }
-        }, [props, boxes, dots, lines]
-    );
+            setBoxes(nboxes);
+            setDots(ndots);
+            setLines(nlines);
+        }
+        else 
+        {
+            const nboxes = DotsAndBoxesHelper.updateBoxes(props.parentWidth, props.parentHeight, props.numberOfRows, props.numberOfColumns, boxes);
+            const ndots = DotsAndBoxesHelper.updateDots(props.parentWidth, props.parentHeight, props.numberOfRows, props.numberOfColumns, dots);
+            const nlines = DotsAndBoxesHelper.updateLines(props.parentWidth, props.parentHeight, props.numberOfRows, props.numberOfColumns, lines);
+        
+            setBoxes(nboxes);
+            setDots(ndots);
+            setLines(nlines);
+        }
+    // eslint-disable-next-line
+    }, [props]);
 
     function onMouseDown(line: ILine){
         const nlines = DotsAndBoxesUpdater.updateLines(lines, line, backgroundColorContext.backgroundColor, true);
@@ -57,9 +58,14 @@ function DotsAndBoxes(props: Props){
         const nboxes: Array<IBox> = DotsAndBoxesUpdater.updateBoxes(boxes, line, backgroundColorContext.backgroundColor);
 
         backgroundColorContext.changeBackgroundColor(backgroundColorContext.backgroundColor);
+        
         setBoxes(nboxes);
         setDots(ndots);
         setLines(nlines);
+
+        if(boxes.length > 0 && boxes.filter(box => box.selected === true).length === boxes.length){
+            gameOverContext.setIsGameOver(gameOverContext.isGameOver);
+        }
     }
 
     function onMouseEnter(line: ILine){

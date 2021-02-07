@@ -3,3 +3,8 @@
   margin: 0;
   text-decoration: none;
 }
+
+@keyframes gameOver {
+  from { opacity: 0;}
+  to { opacity: 1;}
+}

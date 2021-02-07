@@ -24,7 +24,7 @@ function GameOverDialog(props: Props){
             zIndex: 1,
             top: 0,
             left: 0,
-            display: props.isGameOver ? 'block' : 'none'
+            display: props.isGameOver ? 'block' : 'none',
         }
 
         const modalWidth = props.parentWidth < 800 ? Math.floor(props.parentWidth * 0.9) : Math.floor(props.parentWidth * 0.5);
@@ -39,7 +39,10 @@ function GameOverDialog(props: Props){
             marginTop: String(modalTop).concat('px'),
             zIndex: 1,
             borderRadius: '8px',
-            textAlign: 'center'
+            textAlign: 'center',
+            animationName: 'gameOver',
+            animationDuration: '0.5s',
+            overflow: 'hidden'
         }
         
         setModalContainerStyle(nmodalContainerStyle);

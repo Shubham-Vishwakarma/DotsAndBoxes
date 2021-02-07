@@ -8,6 +8,7 @@ import GameBoard from './GameBoard'
 import { useContext, useEffect, useState } from 'react';
 import BackgroundColorContext from './BackgroundColorContext';
 import GameOverDialog from './GameOverDialog';
+import GameOverContext from './GameOverContext';
 
 interface Dimension{
     height: number,
@@ -19,7 +20,9 @@ function Game(){
     const [windowDimensions, setWindowDimensions] = useState<Dimension>({height: window.innerHeight, width: window.innerWidth});
     const [gameDimensions, setGameDimensions] = useState<Dimension>({height: window.innerHeight, width: Math.floor(windowDimensions.width)});
     const [gameCssStyle, setGameCssStyle] = useState<CSS.Properties>({});
+
     const backgroundColorContext =  useContext(BackgroundColorContext);
+    const gameOverContext = useContext(GameOverContext);
 
     // Handle window resize
     useEffect(() => {
@@ -57,7 +60,7 @@ function Game(){
     return (
         <div className='gameSection' style={gameCssStyle}>
             <GameBoard parentWidth={gameDimensions.width} parentHeight={gameDimensions.height} />
-            <GameOverDialog parentWidth={windowDimensions.width} parentHeight={windowDimensions.height} isGameOver={false}/>
+            <GameOverDialog parentWidth={windowDimensions.width} parentHeight={windowDimensions.height} isGameOver={gameOverContext.isGameOver}/>
         </div>
     );
 }
