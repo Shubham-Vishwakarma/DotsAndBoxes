@@ -12,6 +12,7 @@ import BackgroundColorContext from './BackgroundColorContext';
 import DotsAndBoxesHelper from './DotAndBoxesHelper';
 import DotsAndBoxesUpdater from './DotsAndBoxesUpdater';
 import GameOverContext from './GameOverContext';
+import ScoreContext from './ScoreContext';
 
 type Props = {
     parentHeight: number,
@@ -24,6 +25,7 @@ function DotsAndBoxes(props: Props){
 
     const backgroundColorContext = useContext(BackgroundColorContext);
     const gameOverContext = useContext(GameOverContext);
+    const scoreContext = useContext(ScoreContext);
 
     const [boxes, setBoxes] = useState<Array<IBox>>([]);
     const [dots, setDots] = useState<Array<IDot>>([]);
@@ -65,6 +67,7 @@ function DotsAndBoxes(props: Props){
 
         if(boxes.length > 0 && boxes.filter(box => box.selected === true).length === boxes.length){
             gameOverContext.setIsGameOver(gameOverContext.isGameOver);
+            scoreContext.updateScore(boxes);
         }
     }
 

@@ -1,8 +1,11 @@
 import './index.css'
 
-import React, { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import CSS from 'csstype';
 import { useState } from 'react';
+import ScoreContext from './ScoreContext';
+import Utility from './Utility';
+import IScore from './IScore';
 
 type Props = {
     parentWidth: number,
@@ -12,11 +15,29 @@ type Props = {
 
 function GameOverDialog(props: Props){
 
+    const scoreContext = useContext(ScoreContext);
+
     const [modalContainerStyle, setModalContainerStyle] = useState<CSS.Properties>({});
     const [modalStyle, setModalStyle] = useState<CSS.Properties>({})
+    const [winner, setWinner] = useState<string>('');
     
     useEffect(() => {
-        const nmodalContainerStyle: CSS.Properties = {
+        const modalContainerStyle = getModalContainerStyle();
+        const modalStyle = getModalStyle();
+        const winner = getWinner(scoreContext.score);
+
+        setModalContainerStyle(modalContainerStyle);
+        setModalStyle(modalStyle);
+        setWinner(winner);
+
+
+        console.log('aaaa');
+
+    // eslint-disable-next-line
+    },[props.isGameOver]);
+
+    function getModalContainerStyle(): CSS.Properties {
+        const modalContainerStyle: CSS.Properties = {
             width: String(props.parentWidth).concat('px'),
             height: String(props.parentHeight).concat('px'),
             backgroundColor: 'rgba(0,0,0,0.5)',
@@ -27,11 +48,15 @@ function GameOverDialog(props: Props){
             display: props.isGameOver ? 'block' : 'none',
         }
 
+        return modalContainerStyle;
+    }
+
+    function getModalStyle(): CSS.Properties {
         const modalWidth = props.parentWidth < 800 ? Math.floor(props.parentWidth * 0.9) : Math.floor(props.parentWidth * 0.5);
         const modalHeight = Math.floor(props.parentHeight*0.4); 
         const modalTop = (props.parentHeight - modalHeight)/2;
 
-        const nmodalStyle: CSS.Properties = {
+        const modalStyle: CSS.Properties = {
             width: String(modalWidth).concat('px'),
             height: String(modalHeight).concat('px'),
             margin: 'auto',
@@ -45,9 +70,22 @@ function GameOverDialog(props: Props){
             overflow: 'hidden'
         }
         
-        setModalContainerStyle(nmodalContainerStyle);
-        setModalStyle(nmodalStyle);
-    },[props]);
+        return modalStyle;
+    }
+
+    function getWinner(scores: Array<IScore>): string {
+        let maxColor = ''
+        let maxCount = 0;
+        
+        for(let i = 0; i < scores.length; i++){
+            if(Utility.max(scores[i].value, maxCount) > maxCount){
+                maxCount = scores[i].value;
+                maxColor = scores[i].key;
+            }
+        }
+
+        return maxColor;
+    }
 
     return(
         <div id="gameOverModal" className='modalContainer' style={modalContainerStyle}>
@@ -56,7 +94,14 @@ function GameOverDialog(props: Props){
                     <h1 style={{padding: '8px 16px', textAlign: 'right'}}>&times;</h1>
                 </section>
                 <section className="modal-body">
-                    <h1>Red is the Winner!!!</h1>
+                    {
+                        scoreContext.score.map(p => {
+                            return <div key={p.key}>{p.key.toUpperCase()}: {p.value}</div>
+                        })
+                    }
+                    <div>
+                        <h1>Winner is {winner}</h1>
+                    </div>
                 </section>            
             </div>
         </div>
