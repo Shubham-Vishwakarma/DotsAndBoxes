@@ -7,6 +7,7 @@ import CSS from 'csstype';
 import GameBoard from './GameBoard'
 import { useContext, useEffect, useState } from 'react';
 import BackgroundColorContext from './BackgroundColorContext';
+import GameOverDialog from './GameOverDialog';
 
 interface Dimension{
     height: number,
@@ -56,6 +57,7 @@ function Game(){
     return (
         <div className='gameSection' style={gameCssStyle}>
             <GameBoard parentWidth={gameDimensions.width} parentHeight={gameDimensions.height} />
+            <GameOverDialog parentWidth={windowDimensions.width} parentHeight={windowDimensions.height} isGameOver={false}/>
         </div>
     );
 }
