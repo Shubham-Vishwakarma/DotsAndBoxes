@@ -8,10 +8,10 @@ import GameBoard from './GameBoard'
 import { useContext, useEffect, useState } from 'react';
 import BackgroundColorContext from './BackgroundColorContext';
 import GameOverDialog from './GameOverDialog';
-import GameOverContext from './GameOverContext';
+import GameStatusContext from './GameStatusContext';
 import NewGameDialog from './NewGameDialog';
 
-interface Dimension{
+type Dimension = {
     height: number,
     width: number
 }
@@ -23,7 +23,7 @@ function Game(){
     const [gameCssStyle, setGameCssStyle] = useState<CSS.Properties>({});
 
     const backgroundColorContext =  useContext(BackgroundColorContext);
-    const gameOverContext = useContext(GameOverContext);
+    const gameStatusContext = useContext(GameStatusContext);
 
     // Handle window resize
     useEffect(() => {
@@ -60,9 +60,9 @@ function Game(){
 
     return (
         <div className='gameSection' style={gameCssStyle}>
-            <NewGameDialog parentWidth={windowDimensions.width} parentHeight={windowDimensions.height} isNewGame={true}/>
+            <NewGameDialog parentWidth={windowDimensions.width} parentHeight={windowDimensions.height} gameStatus={gameStatusContext.gameStatus}/>
             <GameBoard parentWidth={gameDimensions.width} parentHeight={gameDimensions.height} />
-            <GameOverDialog parentWidth={windowDimensions.width} parentHeight={windowDimensions.height} isGameOver={gameOverContext.isGameOver}/>
+            <GameOverDialog parentWidth={windowDimensions.width} parentHeight={windowDimensions.height} gameStatus={gameStatusContext.gameStatus}/>
         </div>
     );
 }

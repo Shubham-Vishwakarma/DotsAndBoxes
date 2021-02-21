@@ -2,11 +2,12 @@ import './index.css'
 
 import { useState, useEffect } from 'react';
 import CSS from 'csstype';
+import GameStatus from './GameStatus';
 
 type Props = {
     parentWidth: number,
     parentHeight: number,
-    isNewGame: boolean,
+    gameStatus: GameStatus
 }
 
 function NewGameDialog(props: Props){
@@ -22,7 +23,7 @@ function NewGameDialog(props: Props){
         setModalStyle(modalStyle);
 
     // eslint-disable-next-line
-    },[props.isNewGame, props.parentWidth, props.parentHeight]);
+    },[props.gameStatus, props.parentWidth, props.parentHeight]);
 
     function getModalContainerStyle(): CSS.Properties {
         const modalContainerStyle: CSS.Properties = {
@@ -33,7 +34,7 @@ function NewGameDialog(props: Props){
             zIndex: 1,
             top: 0,
             left: 0,
-            display: props.isNewGame ? 'block' : 'none',
+            display: props.gameStatus === GameStatus.NotStarted ? 'block' : 'none',
         }
 
         return modalContainerStyle;

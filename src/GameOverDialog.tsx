@@ -6,11 +6,12 @@ import { useState } from 'react';
 import ScoreContext from './ScoreContext';
 import Utility from './Utility';
 import IScore from './IScore';
+import GameStatus from './GameStatus';
 
 type Props = {
     parentWidth: number,
     parentHeight: number,
-    isGameOver: boolean,
+    gameStatus: GameStatus
 }
 
 function GameOverDialog(props: Props){
@@ -31,7 +32,7 @@ function GameOverDialog(props: Props){
         setWinner(winner);
 
     // eslint-disable-next-line
-    },[props.isGameOver, props.parentWidth, props.parentHeight]);
+    },[props.gameStatus, props.parentWidth, props.parentHeight]);
 
     function getModalContainerStyle(): CSS.Properties {
         const modalContainerStyle: CSS.Properties = {
@@ -42,7 +43,7 @@ function GameOverDialog(props: Props){
             zIndex: 1,
             top: 0,
             left: 0,
-            display: props.isGameOver ? 'block' : 'none',
+            display: props.gameStatus === GameStatus.GameOver ? 'block' : 'none',
         }
 
         return modalContainerStyle;

@@ -1,11 +1,13 @@
 import Game from './Game'
 import BackgroundColorContext from './BackgroundColorContext';
 import { useState } from 'react';
-import GameOverContext from './GameOverContext';
+import GameStatusContext from './GameStatusContext';
 import IBox from './IBox';
 import ScoreContext from './ScoreContext';
 import IScore from './IScore';
 import IScoreContext from './IScoreContext';
+import GameStatus from './GameStatus';
+import IGameStatusContext from './IGameStatusContext';
 
 function App(){
 
@@ -20,10 +22,10 @@ function App(){
         });
     };
 
-    const setIsGameOver = (isGameOver: boolean) => {
-        setGameOverContext({
-            isGameOver: !isGameOver,
-            setIsGameOver: setIsGameOver
+    const setGameStatus = (gameStatus: GameStatus) => {
+        setGameStatusContext({
+            gameStatus: gameStatus,
+            setGameStatus: setGameStatus
         });
     };
 
@@ -50,9 +52,9 @@ function App(){
         changeBackgroundColor: changeBackgroundColor
     });
 
-    const [gameOverContext, setGameOverContext] = useState({
-        isGameOver: false,
-        setIsGameOver: setIsGameOver
+    const [gameStatusContext, setGameStatusContext] = useState<IGameStatusContext>({
+        gameStatus: GameStatus.NotStarted,
+        setGameStatus: setGameStatus
     });
 
     const [scoreContext, setScoreContext] = useState<IScoreContext>({
@@ -61,13 +63,13 @@ function App(){
     });
 
     return(
-        <GameOverContext.Provider value={gameOverContext}>
+        <GameStatusContext.Provider value={gameStatusContext}>
             <ScoreContext.Provider value={scoreContext}>
                 <BackgroundColorContext.Provider value={backgroundColorContext}>
                     <Game />
                 </BackgroundColorContext.Provider>
             </ScoreContext.Provider>
-        </GameOverContext.Provider>
+        </GameStatusContext.Provider>
     );
 }
 
