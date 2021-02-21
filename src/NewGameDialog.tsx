@@ -22,7 +22,7 @@ function NewGameDialog(props: Props){
         setModalStyle(modalStyle);
 
     // eslint-disable-next-line
-    },[props.isNewGame]);
+    },[props.isNewGame, props.parentWidth, props.parentHeight]);
 
     function getModalContainerStyle(): CSS.Properties {
         const modalContainerStyle: CSS.Properties = {
@@ -54,8 +54,9 @@ function NewGameDialog(props: Props){
             borderRadius: '8px',
             textAlign: 'center',
             animationName: 'gameOver',
-            animationDuration: '0.5s',
-            overflow: 'hidden'
+            animationDuration: '0.75s',
+            overflow: 'hidden',
+            padding: "16px"
         }
         
         return modalStyle;
@@ -65,7 +66,12 @@ function NewGameDialog(props: Props){
         <div id="newGameModal" className='modalContainer' style={modalContainerStyle}>
             <div className='modal' style={modalStyle}>
                 <section className="modal-body">
-                        <h1>New Game</h1>
+                        <p id="newGameText">New Game</p>
+                        <div className="newGameButtonContainer">
+                            <button className="newGameButtonGridSize">3 X 3</button>
+                            <button className="newGameButtonGridSize">4 X 4</button>
+                            <button className="newGameButtonGridSize">5 X 5</button>
+                        </div>
                 </section>            
             </div>
         </div>

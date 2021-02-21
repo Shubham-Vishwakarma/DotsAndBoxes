@@ -31,7 +31,7 @@ function GameOverDialog(props: Props){
         setWinner(winner);
 
     // eslint-disable-next-line
-    },[props.isGameOver]);
+    },[props.isGameOver, props.parentWidth, props.parentHeight]);
 
     function getModalContainerStyle(): CSS.Properties {
         const modalContainerStyle: CSS.Properties = {
