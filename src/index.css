@@ -18,7 +18,7 @@
   justify-content: center;
 }
 
-.newGameButtonGridSize {
+.newGameGridSizeButton {
   font-family: 'Cookie', cursive, Arial, Helvetica, sans-serif;
   font-size: 1.5rem;
   margin: 8px;
@@ -28,6 +28,35 @@
   background-color: lightgreen;
   box-shadow: none;
   border-radius: 4px;
+  border: white 1px solid;
+}
+
+.newGameGridSizeButton:hover {
+  cursor: pointer;
+  background-color: rgba(0, 255, 0, 0.5);
+  border: black 1px solid;
+}
+
+.newGameGridSizeButton:focus {
+  background-color: green;
+  color: white;
+  border: white 1px solid;
+}
+
+#startButton {
+  font-family: 'Cookie', cursive, Arial, Helvetica, sans-serif;
+  font-size: 3.5rem;
+  width: 40%;
+  background-color: blueviolet;
+  color: white;
+  height: 4rem;
+  box-shadow: none;
+  border-radius: 4px;
+  border: white 1px solid;
+}
+
+#startButton:hover{
+  cursor: pointer;
 }
 
 @keyframes gameOver {
@@ -41,6 +70,10 @@
   @keyframes gameOver {
     from { margin-top: 0; opacity: 0;}
     to { margin-top: 60%; opacity: 1;}
+  }
+
+  #startButton {
+    width: 60%;
   }
 
 }

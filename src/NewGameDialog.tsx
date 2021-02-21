@@ -1,8 +1,10 @@
 import './index.css'
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import CSS from 'csstype';
 import GameStatus from './GameStatus';
+import IGameStatusContext from './IGameStatusContext';
+import GameStatusContext from './GameStatusContext';
 
 type Props = {
     parentWidth: number,
@@ -12,8 +14,11 @@ type Props = {
 
 function NewGameDialog(props: Props){
 
+    const gameStatusContext = useContext<IGameStatusContext>(GameStatusContext);
+
     const [modalContainerStyle, setModalContainerStyle] = useState<CSS.Properties>({});
-    const [modalStyle, setModalStyle] = useState<CSS.Properties>({})
+    const [modalStyle, setModalStyle] = useState<CSS.Properties>({});
+    const [gridSize, setGridSize] = useState<number>(0);
     
     useEffect(() => {
         const modalContainerStyle = getModalContainerStyle();
@@ -63,16 +68,25 @@ function NewGameDialog(props: Props){
         return modalStyle;
     }
 
+    function OnNewGameGridSizeButtonClick(gridSize: number){
+        setGridSize(gridSize);
+    }
+
+    function OnStartButtonClick(){
+        gameStatusContext.setGameStatus(GameStatus.Started);
+    }
+
     return(
         <div id="newGameModal" className='modalContainer' style={modalContainerStyle}>
             <div className='modal' style={modalStyle}>
                 <section className="modal-body">
                         <p id="newGameText">New Game</p>
                         <div className="newGameButtonContainer">
-                            <button className="newGameButtonGridSize">3 X 3</button>
-                            <button className="newGameButtonGridSize">4 X 4</button>
-                            <button className="newGameButtonGridSize">5 X 5</button>
+                            <button className="newGameGridSizeButton" onClick={() => OnNewGameGridSizeButtonClick(3)}>3 X 3</button>
+                            <button className="newGameGridSizeButton" onClick={() => OnNewGameGridSizeButtonClick(4)}>4 X 4</button>
+                            <button className="newGameGridSizeButton" onClick={() => OnNewGameGridSizeButtonClick(5)}>5 X 5</button>
                         </div>
+                        <button className="startButton" id="startButton" onClick={OnStartButtonClick}>Start</button>
                 </section>            
             </div>
         </div>
