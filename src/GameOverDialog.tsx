@@ -7,6 +7,9 @@ import ScoreContext from './ScoreContext';
 import Utility from './Utility';
 import IScore from './IScore';
 import GameStatus from './GameStatus';
+import IScoreContext from './IScoreContext';
+import IGameStatusContext from './IGameStatusContext';
+import GameStatusContext from './GameStatusContext';
 
 type Props = {
     parentWidth: number,
@@ -16,7 +19,8 @@ type Props = {
 
 function GameOverDialog(props: Props){
 
-    const scoreContext = useContext(ScoreContext);
+    const scoreContext = useContext<IScoreContext>(ScoreContext);
+    const gameStatusConext = useContext<IGameStatusContext>(GameStatusContext);
 
     const [modalContainerStyle, setModalContainerStyle] = useState<CSS.Properties>({});
     const [modalStyle, setModalStyle] = useState<CSS.Properties>({})
@@ -86,6 +90,10 @@ function GameOverDialog(props: Props){
         return maxColor;
     }
 
+    function OnRestartButtonClick(){
+        gameStatusConext.setGameStatus(GameStatus.NotStarted);
+    }
+
     return(
         <div id="gameOverModal" className='modalContainer' style={modalContainerStyle}>
             <div className='modal' style={modalStyle}>
@@ -103,7 +111,7 @@ function GameOverDialog(props: Props){
                     </div>
                 </section>
                 <section>
-                    <button className="restartButton" id="restartButton">Restart</button>
+                    <button className="restartButton" id="restartButton" onClick={OnRestartButtonClick}>Restart</button>
                 </section>            
             </div>
         </div>
