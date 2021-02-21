@@ -74,8 +74,12 @@ function NewGameDialog(props: Props){
     }
 
     function OnStartButtonClick(){
-        props.OnStart({rows: gridSize, columns: gridSize});
-        gameStatusContext.setGameStatus(GameStatus.Started);
+
+        if(gridSize > 0){
+            props.OnStart({rows: gridSize, columns: gridSize});
+            gameStatusContext.setGameStatus(GameStatus.Started);
+        }
+        
     }
 
     return(

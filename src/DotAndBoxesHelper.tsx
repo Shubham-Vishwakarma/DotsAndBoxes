@@ -7,10 +7,14 @@ import Utility from './Utility';
 class DotsAndBoxesHelper {
     
     static createBoxes(parentWidth: number, parentHeight: number, numberOfRows: number, numberOfColumns: number): Array<IBox>{
+        
+        const boxes: Array<IBox> = [];
+
+        if(numberOfRows === 0 || numberOfColumns === 0)
+            return boxes;
+
         let boxWidth: number = Math.floor(parentWidth/numberOfRows);
         let boxHeight: number = Math.floor(parentHeight/numberOfColumns);
-    
-        const boxes: Array<IBox> = [];
     
         for(let i = 0; i < numberOfRows; i++){
             for(let j = 0; j < numberOfColumns; j++){
@@ -33,14 +37,18 @@ class DotsAndBoxesHelper {
     }
 
     static createDots(parentWidth: number, parentHeight: number, numberOfRows: number, numberOfColumns: number): Array<IDot>{
+        
+        const dots: Array<IDot> = []
+
+        if(numberOfRows === 0 || numberOfColumns === 0)
+            return dots;
+        
         const boxWidth: number = Math.floor(parentWidth/numberOfRows);
         const boxHeight: number = Math.floor(parentHeight/numberOfColumns);
         const numberOfRowDots: number = numberOfRows + 1;
         const numberOfColumnDots: number = numberOfColumns + 1;
 
         const dotDiameter: number = Math.floor(Utility.min(boxWidth, boxHeight) * 0.1);
-
-        const dots: Array<IDot> = []
 
         for(let i = 0; i < numberOfRowDots; i++){
             for(let j = 0; j < numberOfColumnDots; j++){
@@ -65,10 +73,14 @@ class DotsAndBoxesHelper {
     }
 
     static createLines(parentWidth: number, parentHeight: number, numberOfRows: number, numberOfColumns: number): Array<ILine>{
+        
+        const lines: Array<ILine> = []
+
+        if(numberOfRows === 0 || numberOfColumns === 0)
+            return lines;
+        
         const boxWidth: number = Math.floor(parentWidth/numberOfRows);
         const boxHeight: number = Math.floor(parentHeight/numberOfColumns);
-
-        const lines: Array<ILine> = []
 
         //Horizontal Lines
         for(let i = 0; i < numberOfRows + 1; i++){
@@ -116,6 +128,10 @@ class DotsAndBoxesHelper {
     }
 
     static updateBoxes(parentWidth: number, parentHeight: number, numberOfRows: number, numberOfColumns: number, boxes: Array<IBox>): Array<IBox>{
+        
+        if(numberOfRows === 0 || numberOfColumns === 0 || boxes.length === 0)
+            return boxes;
+        
         let boxWidth: number = Math.floor(parentWidth/numberOfRows);
         let boxHeight: number = Math.floor(parentHeight/numberOfColumns);
     
@@ -130,6 +146,10 @@ class DotsAndBoxesHelper {
     }
 
     static updateDots(parentWidth: number, parentHeight: number, numberOfRows: number, numberOfColumns: number, dots: Array<IDot>): Array<IDot>{
+        
+        if(numberOfRows === 0 || numberOfColumns === 0 || dots.length === 0)
+            return dots;
+        
         const boxWidth: number = Math.floor(parentWidth/numberOfRows);
         const boxHeight: number = Math.floor(parentHeight/numberOfColumns);
         
@@ -148,6 +168,10 @@ class DotsAndBoxesHelper {
     }
 
     static updateLines(parentWidth: number, parentHeight: number, numberOfRows: number, numberOfColumns: number, lines: Array<ILine>): Array<ILine>{
+        
+        if(numberOfRows === 0 || numberOfColumns === 0 || lines.length === 0)
+            return lines;
+        
         const boxWidth: number = Math.floor(parentWidth/numberOfRows);
         const boxHeight: number = Math.floor(parentHeight/numberOfColumns);
 
