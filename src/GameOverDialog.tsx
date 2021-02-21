@@ -101,6 +101,9 @@ function GameOverDialog(props: Props){
                     <div>
                         <p id="winnerText">Winner is {winner.toUpperCase()}</p>
                     </div>
+                </section>
+                <section>
+                    <button className="restartButton" id="restartButton">Restart</button>
                 </section>            
             </div>
         </div>
