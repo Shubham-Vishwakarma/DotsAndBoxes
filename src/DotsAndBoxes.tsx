@@ -35,7 +35,7 @@ function DotsAndBoxes(props: Props){
     const [lines, setLines] = useState<Array<ILine>>([]);
 
     useEffect(() => {
-        if(boxes.length === 0 && dots.length === 0 && lines.length === 0){
+        if(boxes.length === 0 || dots.length === 0 || lines.length === 0){
             const nboxes = DotsAndBoxesHelper.createBoxes(props.parentWidth, props.parentHeight, props.numberOfRows, props.numberOfColumns);
             const ndots = DotsAndBoxesHelper.createDots(props.parentWidth, props.parentHeight, props.numberOfRows, props.numberOfColumns);
             const nlines = DotsAndBoxesHelper.createLines(props.parentWidth, props.parentHeight, props.numberOfRows, props.numberOfColumns);
@@ -55,7 +55,7 @@ function DotsAndBoxes(props: Props){
             setLines(nlines);
         }
     // eslint-disable-next-line
-    }, [props]);
+    }, [props.numberOfColumns, props.numberOfRows, props.parentWidth, props.parentHeight]);
 
     function onMouseDown(line: ILine){
         const nlines = DotsAndBoxesUpdater.updateLines(lines, line, backgroundColorContext.backgroundColor, true);

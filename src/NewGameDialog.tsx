@@ -9,7 +9,8 @@ import GameStatusContext from './GameStatusContext';
 type Props = {
     parentWidth: number,
     parentHeight: number,
-    gameStatus: GameStatus
+    gameStatus: GameStatus,
+    OnStart: any
 }
 
 function NewGameDialog(props: Props){
@@ -73,6 +74,7 @@ function NewGameDialog(props: Props){
     }
 
     function OnStartButtonClick(){
+        props.OnStart({rows: gridSize, columns: gridSize});
         gameStatusContext.setGameStatus(GameStatus.Started);
     }
 

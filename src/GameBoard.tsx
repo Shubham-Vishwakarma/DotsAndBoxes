@@ -5,9 +5,15 @@ import CSS from 'csstype';
 import DotsAndBoxes from './DotsAndBoxes';
 import Utility from './Utility';
 
+type Grid = {
+    rows: number,
+    columns: number
+}
+
 type Props = {
     parentWidth: number,
-    parentHeight: number
+    parentHeight: number,
+    grid: Grid
 }
 
 function GameBoard(props: Props){
@@ -49,8 +55,8 @@ function GameBoard(props: Props){
             <DotsAndBoxes
                 parentHeight={boardSize} 
                 parentWidth={boardSize}
-                numberOfRows={3}
-                numberOfColumns={3}
+                numberOfRows={props.grid.rows}
+                numberOfColumns={props.grid.columns}
             />
         </div>
     )

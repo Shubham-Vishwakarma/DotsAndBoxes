@@ -16,11 +16,17 @@ type Dimension = {
     width: number
 }
 
+type Grid = {
+    rows: number,
+    columns: number
+}
+
 function Game(){
 
     const [windowDimensions, setWindowDimensions] = useState<Dimension>({height: window.innerHeight, width: window.innerWidth});
     const [gameDimensions, setGameDimensions] = useState<Dimension>({height: window.innerHeight, width: Math.floor(windowDimensions.width)});
     const [gameCssStyle, setGameCssStyle] = useState<CSS.Properties>({});
+    const [grid, setGrid] = useState<Grid>({rows: 0, columns: 0});
 
     const backgroundColorContext =  useContext(BackgroundColorContext);
     const gameStatusContext = useContext(GameStatusContext);
@@ -60,8 +66,8 @@ function Game(){
 
     return (
         <div className='gameSection' style={gameCssStyle}>
-            <NewGameDialog parentWidth={windowDimensions.width} parentHeight={windowDimensions.height} gameStatus={gameStatusContext.gameStatus}/>
-            <GameBoard parentWidth={gameDimensions.width} parentHeight={gameDimensions.height} />
+            <NewGameDialog parentWidth={windowDimensions.width} parentHeight={windowDimensions.height} gameStatus={gameStatusContext.gameStatus} OnStart={setGrid}/>
+            <GameBoard parentWidth={gameDimensions.width} parentHeight={gameDimensions.height} grid={grid}/>
             <GameOverDialog parentWidth={windowDimensions.width} parentHeight={windowDimensions.height} gameStatus={gameStatusContext.gameStatus}/>
         </div>
     );
