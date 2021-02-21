@@ -65,7 +65,8 @@ function GameOverDialog(props: Props){
             textAlign: 'center',
             animationName: 'gameOver',
             animationDuration: '0.5s',
-            overflow: 'hidden'
+            overflow: 'hidden',
+            padding: '8px'
         }
         
         return modalStyle;
@@ -89,16 +90,16 @@ function GameOverDialog(props: Props){
         <div id="gameOverModal" className='modalContainer' style={modalContainerStyle}>
             <div className='modal' style={modalStyle}>
                 <section className='modal-header'>
-                    <h1 style={{padding: '8px 16px', textAlign: 'right'}}>&times;</h1>
+                    <h1 id="gameOverCloseButton">&times;</h1>
                 </section>
                 <section className="modal-body">
                     {
                         scoreContext.score.map(p => {
-                            return <div key={p.key}>{p.key.toUpperCase()}: {p.value}</div>
+                            return <p key={p.key} className="finalScoreText">{p.key.toUpperCase()}: {p.value}</p>
                         })
                     }
                     <div>
-                        <h1>Winner is {winner}</h1>
+                        <p id="winnerText">Winner is {winner.toUpperCase()}</p>
                     </div>
                 </section>            
             </div>

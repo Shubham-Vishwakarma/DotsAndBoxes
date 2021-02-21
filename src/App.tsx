@@ -32,8 +32,7 @@ function App(){
     const updateScore = (boxes: Array<IBox>) => {
 
         const score: Array<IScore> = [];
-        const colors = Array.from(new Set(boxes.map(box => box.backgroundColor)));
-
+        
         for(let i = 0; i < colors.length; i++){
             const key = colors[i];
             const count = boxes.filter(box => box.selected === true && box.backgroundColor === key).length;
