@@ -90,8 +90,10 @@ function GameOverDialog(props: Props){
         return maxColor;
     }
 
+    // Need to change this with a better logic rather reload page
     function OnRestartButtonClick(){
-        gameStatusConext.setGameStatus(GameStatus.NotStarted);
+        // gameStatusConext.setGameStatus(GameStatus.NotStarted);
+        window.location.reload();
     }
 
     return(
