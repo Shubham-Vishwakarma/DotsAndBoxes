@@ -8,8 +8,8 @@ import Utility from './Utility';
 import IScore from './IScore';
 import GameStatus from './GameStatus';
 import IScoreContext from './IScoreContext';
-import IGameStatusContext from './IGameStatusContext';
-import GameStatusContext from './GameStatusContext';
+// import IGameStatusContext from './IGameStatusContext';
+// import GameStatusContext from './GameStatusContext';
 
 type Props = {
     parentWidth: number,
@@ -20,7 +20,7 @@ type Props = {
 function GameOverDialog(props: Props){
 
     const scoreContext = useContext<IScoreContext>(ScoreContext);
-    const gameStatusConext = useContext<IGameStatusContext>(GameStatusContext);
+    // const gameStatusConext = useContext<IGameStatusContext>(GameStatusContext);
 
     const [modalContainerStyle, setModalContainerStyle] = useState<CSS.Properties>({});
     const [modalStyle, setModalStyle] = useState<CSS.Properties>({})

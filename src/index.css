@@ -11,36 +11,39 @@
   font-size: 64px;
 }
 
-.newGameButtonContainer {
+.gridSizeContainer, .numOfPlayerContainer {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
 }
 
-.newGameGridSizeButton {
+.gridSizeButton, .numOfPlayerButton, .gridSizeButtonSelected, .numOfPlayerButtonSelected{
   font-family: 'Cookie', cursive, Arial, Helvetica, sans-serif;
   font-size: 1.5rem;
   margin: 8px;
   padding: 8px;
-  width: 4rem;
-  height: 4rem;
+  width: 3.5rem;
+  height: 3.5rem;
   background-color: lightgreen;
   box-shadow: none;
   border-radius: 4px;
   border: white 1px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.newGameGridSizeButton:hover {
+.gridSizeButton:hover, .numOfPlayerButton:hover {
   cursor: pointer;
   background-color: rgba(0, 255, 0, 0.5);
   border: black 1px solid;
 }
 
-.newGameGridSizeButton:focus {
+.gridSizeButtonSelected, .numOfPlayerButtonSelected {
   background-color: green;
   color: white;
-  border: white 1px solid;
+  border: black 1px solid;
 }
 
 #startButton {
