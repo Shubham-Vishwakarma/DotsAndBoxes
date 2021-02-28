@@ -5,6 +5,8 @@ import CSS from 'csstype';
 import GameStatus from './GameStatus';
 import IGameStatusContext from './IGameStatusContext';
 import GameStatusContext from './GameStatusContext';
+import INumberOfPlayersContext from './INumberOfPlayersContext';
+import NumberOfPlayersContext from './NumberOfPlayersContext';
 
 type Props = {
     parentWidth: number,
@@ -16,6 +18,7 @@ type Props = {
 function NewGameDialog(props: Props){
 
     const gameStatusContext = useContext<IGameStatusContext>(GameStatusContext);
+    const numberOfPlayerContext = useContext<INumberOfPlayersContext>(NumberOfPlayersContext);
 
     const [modalContainerStyle, setModalContainerStyle] = useState<CSS.Properties>({});
     const [modalStyle, setModalStyle] = useState<CSS.Properties>({});
@@ -80,9 +83,10 @@ function NewGameDialog(props: Props){
 
     function OnStartButtonClick(){
 
-        if(gridSize > 0){
+        if(gridSize > 0 && numOfPlayers > 0){
             props.OnStart({rows: gridSize, columns: gridSize});
             gameStatusContext.setGameStatus(GameStatus.Started);
+            numberOfPlayerContext.setNumberOfPlayers(numOfPlayers);
         }
         
     }
@@ -93,14 +97,14 @@ function NewGameDialog(props: Props){
                 <section className="modal-body">
                         <p id="newGameText">New Game</p>
                         <div className="gridSizeContainer">
-                            <div className={gridSize == 3 ? "gridSizeButtonSelected" : "gridSizeButton"} onClick={() => OnGridSizeButtonClick(3)}><p>3 X 3</p></div>
-                            <div className={gridSize == 4 ? "gridSizeButtonSelected" : "gridSizeButton"} onClick={() => OnGridSizeButtonClick(4)}><p>4 X 4</p></div>
-                            <div className={gridSize == 5 ? "gridSizeButtonSelected" : "gridSizeButton"} onClick={() => OnGridSizeButtonClick(5)}><p>5 X 5</p></div>
+                            <div className={gridSize === 3 ? "gridSizeButtonSelected" : "gridSizeButton"} onClick={() => OnGridSizeButtonClick(3)}><p>3 X 3</p></div>
+                            <div className={gridSize === 4 ? "gridSizeButtonSelected" : "gridSizeButton"} onClick={() => OnGridSizeButtonClick(4)}><p>4 X 4</p></div>
+                            <div className={gridSize === 5 ? "gridSizeButtonSelected" : "gridSizeButton"} onClick={() => OnGridSizeButtonClick(5)}><p>5 X 5</p></div>
                         </div>
                         <div className="numOfPlayerContainer">
-                            <div className={numOfPlayers == 2 ? "numOfPlayerButtonSelected" : "numOfPlayerButton"} onClick={() => OnNumOfPlayersButtonClick(2)}><p>2</p></div>
-                            <div className={numOfPlayers == 3 ? "numOfPlayerButtonSelected" : "numOfPlayerButton"} onClick={() => OnNumOfPlayersButtonClick(3)}><p>3</p></div>
-                            <div className={numOfPlayers == 4 ? "numOfPlayerButtonSelected" : "numOfPlayerButton"} onClick={() => OnNumOfPlayersButtonClick(4)}><p>4</p></div>
+                            <div className={numOfPlayers === 2 ? "numOfPlayerButtonSelected" : "numOfPlayerButton"} onClick={() => OnNumOfPlayersButtonClick(2)}><p>2</p></div>
+                            <div className={numOfPlayers === 3 ? "numOfPlayerButtonSelected" : "numOfPlayerButton"} onClick={() => OnNumOfPlayersButtonClick(3)}><p>3</p></div>
+                            <div className={numOfPlayers === 4 ? "numOfPlayerButtonSelected" : "numOfPlayerButton"} onClick={() => OnNumOfPlayersButtonClick(4)}><p>4</p></div>
                         </div>
                         <button className="startButton" id="startButton" onClick={OnStartButtonClick}>Start</button>
                 </section>            

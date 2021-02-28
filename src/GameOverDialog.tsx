@@ -100,7 +100,7 @@ function GameOverDialog(props: Props){
         <div id="gameOverModal" className='modalContainer' style={modalContainerStyle}>
             <div className='modal' style={modalStyle}>
                 <section className='modal-header'>
-                    <h1 id="gameOverCloseButton">&times;</h1>
+                    {/* <h1 id="gameOverCloseButton">&times;</h1> */}
                 </section>
                 <section className="modal-body">
                     {
