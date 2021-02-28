@@ -58,12 +58,16 @@ function DotsAndBoxes(props: Props){
     }, [props.numberOfColumns, props.numberOfRows, props.parentWidth, props.parentHeight]);
 
     function onMouseDown(line: ILine){
+
+        // Do not change background if a box is completed
+        if(!DotsAndBoxesUpdater.isAnyBoxCompleted(boxes, line)){
+            backgroundColorContext.changeBackgroundColor(backgroundColorContext.backgroundColor);
+        }
+
         const nlines = DotsAndBoxesUpdater.updateLines(lines, line, backgroundColorContext.backgroundColor, true);
         const ndots: Array<IDot> = DotsAndBoxesUpdater.updateDots(dots, line, 'rgba(0, 38, 97, 0.6)', true)
         const nboxes: Array<IBox> = DotsAndBoxesUpdater.updateBoxes(boxes, line, backgroundColorContext.backgroundColor);
 
-        backgroundColorContext.changeBackgroundColor(backgroundColorContext.backgroundColor);
-        
         setBoxes(nboxes);
         setDots(ndots);
         setLines(nlines);

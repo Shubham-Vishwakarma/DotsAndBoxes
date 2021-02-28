@@ -68,6 +68,38 @@ class DotsAndBoxesUpdater{
         }
     }
 
+    static isAnyBoxCompleted(boxes: Array<IBox>, line: ILine): boolean {
+
+        let completed = false;
+
+        switch(line.direction){
+            case Direction.Horizontal: 
+                for(let i = 0; i < boxes.length; i++){
+                    const item: IBox = boxes[i];
+                    if((item.row === line.row && item.column === line.column) ||
+                        (item.row === line.row - 1 && item.column === line.column))
+                    {
+                        completed = item.count + 1 >= 4;
+                        if(completed) break;
+                    }
+                }
+                break;
+            case Direction.Vertical: 
+                for(let i = 0; i < boxes.length; i++){
+                    const item: IBox = boxes[i];   
+                    if((item.row === line.row && item.column === line.column) ||
+                        (item.row === line.row && item.column === line.column - 1))
+                    {
+                        completed = item.count + 1 >= 4;
+                        if(completed) break;
+                    }
+                }
+                break;
+        }
+
+        return completed;
+    }
+
 }
 
 export default DotsAndBoxesUpdater;
