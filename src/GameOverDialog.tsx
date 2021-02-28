@@ -70,7 +70,11 @@ function GameOverDialog(props: Props){
             animationName: 'gameOver',
             animationDuration: '0.5s',
             overflow: 'hidden',
-            padding: '8px'
+            padding: '8px',
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
         }
         
         return modalStyle;

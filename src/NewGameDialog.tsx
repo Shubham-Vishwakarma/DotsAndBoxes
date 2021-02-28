@@ -67,7 +67,11 @@ function NewGameDialog(props: Props){
             animationName: 'gameOver',
             animationDuration: '0.75s',
             overflow: 'hidden',
-            padding: "16px"
+            padding: "16px",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
         }
         
         return modalStyle;
@@ -106,8 +110,10 @@ function NewGameDialog(props: Props){
                             <div className={numOfPlayers === 3 ? "numOfPlayerButtonSelected" : "numOfPlayerButton"} onClick={() => OnNumOfPlayersButtonClick(3)}><p>3</p></div>
                             <div className={numOfPlayers === 4 ? "numOfPlayerButtonSelected" : "numOfPlayerButton"} onClick={() => OnNumOfPlayersButtonClick(4)}><p>4</p></div>
                         </div>
-                        <button className="startButton" id="startButton" onClick={OnStartButtonClick}>Start</button>
-                </section>            
+                </section>
+                <section>
+                    <button className="startButton" id="startButton" onClick={OnStartButtonClick}>Start</button>
+                </section>      
             </div>
         </div>
     );
